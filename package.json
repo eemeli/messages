@@ -1,0 +1,17 @@
+{
+  "name": "messages",
+  "version": "0.0.1",
+  "description": "Text message generation",
+  "main": "dist/index.js",
+  "repository": "https://github.com/eemeli/messages",
+  "author": "Eemeli Aro <eemeli@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "jest": "^22.4.3"
+  },
+  "dependencies": {
+    "intl-pluralrules": "^0.2.1"
+  }
+}
