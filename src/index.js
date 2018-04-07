@@ -9,10 +9,11 @@ const msg = (strings, ...values) => {
     // called as msg('key') or msg('key', 'value')
     return values.length === 0 ? strings : values[0]
   }
+  let res = ''
   for (let i = 0; i < values.length; ++i) {
-    strings[i] += values[i]
+    res += strings[i] + values[i]
   }
-  return strings.join('')
+  return res + strings[strings.length - 1]
 }
 
 export default msg

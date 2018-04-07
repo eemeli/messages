@@ -8,7 +8,7 @@ export default class Messages {
   }
 
   getLocale () {
-    return this[pluralRules].resolvedOptions.locale
+    return this[pluralRules].resolvedOptions().locale
   }
 
   setLocale (lc) {
@@ -32,7 +32,7 @@ export default class Messages {
   }
 
   plural (key, arg, cases, options) {
-    if (typeof arg !== 'object' && arguments.length < 4) {
+    if (typeof arg === 'object' && arguments.length < 4) {
       // plural(arg, cases[, options])
       key = null
       arg = arguments[0]
@@ -43,20 +43,22 @@ export default class Messages {
     }
     if (!isFinite(arg)) arg = this.nonNumeric(arg)
     if (!cases || typeof cases !== 'object') return this.defaultOther(arg, 'plural')
+    if (!cases.other) cases.other = this.defaultOther(arg, 'plural')
     if (arg in cases) return cases[arg]
     if (options.offset) arg -= options.offset
     const rule = this.pluralRule(arg, options.type === 'ordinal')
-    return rule in cases ? cases[rule] : (cases.other || this.defaultOther(arg, 'plural'))
+    return rule in cases ? cases[rule] : cases.other
   }
 
   select (key, arg, cases) {
-    if (typeof arg !== 'object' && arguments.length === 2) {
+    if (typeof arg === 'object' && arguments.length === 2) {
       // select(arg, cases)
       key = null
       arg = arguments[0]
       cases = arguments[1]
     }
     if (!cases || typeof cases !== 'object') return this.defaultOther(arg, 'select')
-    return arg in cases ? cases[arg] : (cases.other || this.defaultOther(arg, 'select'))
+    if (!cases.other) cases.other = this.defaultOther(arg, 'select')
+    return arg in cases ? cases[arg] : cases.other
   }
 }
