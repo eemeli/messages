@@ -2,10 +2,14 @@
   "name": "messages",
   "version": "0.0.1",
   "description": "Text message generation",
-  "main": "dist/index.js",
   "repository": "https://github.com/eemeli/messages",
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist/",
+    "!dist/*.test.js"
+  ],
   "scripts": {
     "build": "babel -d dist src/",
     "prepublishOnly": "npm run build",
