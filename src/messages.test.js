@@ -11,7 +11,7 @@ test('getLocale', () => {
 
 test('setLocale', () => {
   messages.setLocale('fi-FI')
-  expect(messages.getLocale()).toBe('fi')
+  expect(messages.getLocale()).toMatch(/^(fi|fi-FI)$/)
 })
 
 test('defaultOther', () => {

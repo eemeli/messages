@@ -9,15 +9,26 @@
   "scripts": {
     "build": "babel -d dist src/",
     "prepublishOnly": "npm run build",
-    "test": "jest"
+    "test": "jest src/"
   },
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "jest": "^22.4.3"
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0"
   },
   "dependencies": {
     "intl-pluralrules": "^0.2.1"
