@@ -39,23 +39,39 @@ describe('plural', () => {
   })
 
   test('matching exact', () => {
-    const msg = messages.plural(1, { 1: 'number 1', one: 'one', other: 'other' })
+    const msg = messages.plural(1, {
+      1: 'number 1',
+      one: 'one',
+      other: 'other'
+    })
     expect(msg).toBe('number 1')
   })
 
   test('with ordinal type', () => {
-    const msg = messages.plural(3, { one: 'one', two: 'two', few: 'few', other: 'other' }, { type: 'ordinal' })
+    const msg = messages.plural(
+      3,
+      { one: 'one', two: 'two', few: 'few', other: 'other' },
+      { type: 'ordinal' }
+    )
     expect(msg).toBe('few')
   })
 
   test('with offset & ordinal type', () => {
-    const msg = messages.plural(2, { one: 'one', two: 'two', few: 'few', other: 'other' }, { offset: 1, type: 'ordinal' })
+    const msg = messages.plural(
+      2,
+      { one: 'one', two: 'two', few: 'few', other: 'other' },
+      { offset: 1, type: 'ordinal' }
+    )
     expect(msg).toBe('one')
   })
 
   test('with non-numeric value', () => {
-    expect(() => messages.plural('one', { one: 'one', other: 'other' })).toThrow(/Plural.*"one"/)
-    expect(() => messages.plural(NaN, { one: 'one', other: 'other' })).toThrow(/Plural.*"NaN"/)
+    expect(() =>
+      messages.plural('one', { one: 'one', other: 'other' })
+    ).toThrow(/Plural.*"one"/)
+    expect(() => messages.plural(NaN, { one: 'one', other: 'other' })).toThrow(
+      /Plural.*"NaN"/
+    )
   })
 
   test('missing other', () => {
@@ -63,13 +79,13 @@ describe('plural', () => {
   })
 
   test('with custom defaultOther', () => {
-    messages.defaultOther = (arg) => String(arg)
+    messages.defaultOther = arg => String(arg)
     const msg = messages.plural(2, { one: 'one' })
     expect(msg).toBe('2')
   })
 
   test('with custom nonNumeric', () => {
-    messages.nonNumeric = (arg) => 0
+    messages.nonNumeric = arg => 0
     const msg = messages.plural('x', { 0: 'zero', one: 'one', other: 'other' })
     expect(msg).toBe('zero')
   })
@@ -92,11 +108,13 @@ describe('select', () => {
   })
 
   test('missing other', () => {
-    expect(() => messages.select('one', { one: 'one' })).toThrow(/select.*"one"/)
+    expect(() => messages.select('one', { one: 'one' })).toThrow(
+      /select.*"one"/
+    )
   })
 
   test('with custom defaultOther', () => {
-    messages.defaultOther = (arg) => String(arg)
+    messages.defaultOther = arg => String(arg)
     const msg = messages.select('two', { one: 'one' })
     expect(msg).toBe('two')
   })

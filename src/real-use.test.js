@@ -1,14 +1,18 @@
 import msg from './index'
 
-const list = (items) => items.filter(it => it).join(', ')
-const time = (date) => date && (date.getHours() + ':' + date.getMinutes())
+const list = items => items.filter(it => it).join(', ')
+const time = date => date && date.getHours() + ':' + date.getMinutes()
 
 const itemLocation = ([loc, ...other], start, end) => {
-  const locStr = !loc ? ''
-    : other.length === 0 ? loc
+  const locStr = !loc
+    ? ''
+    : other.length === 0
+    ? loc
     : msg`${loc} (${list(other)})`
-  const timeStr = !start ? ''
-    : !end ? time(start)
+  const timeStr = !start
+    ? ''
+    : !end
+    ? time(start)
     : msg`${time(start)} - ${time(end)}`
   return list([locStr, timeStr])
 }
