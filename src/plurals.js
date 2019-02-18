@@ -3,7 +3,7 @@ import 'intl-pluralrules'
 const pluralRules = Symbol('pluralRules')
 const ordinalRules = Symbol('ordinalRules')
 
-export default class Messages {
+export default class Plurals {
   constructor(lc) {
     this.setLocale(lc)
   }
@@ -28,7 +28,7 @@ export default class Messages {
     return this[pluralRules].select(arg)
   }
 
-  plural(ordinal, cases) {
+  get(ordinal, cases) {
     if (!cases || typeof cases !== 'object')
       throw new Error('Missing cases argument')
     if (cases.other == null) throw new Error('cases.other is required')

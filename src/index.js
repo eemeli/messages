@@ -1,4 +1,4 @@
-import Messages from './messages'
+import Plurals from './plurals'
 
 function msg(strings, ...values) {
   if (typeof strings === 'string') {
@@ -21,16 +21,16 @@ msg.select = function select(cases, other) {
   }
 }
 
-const messages = new Messages('en')
-msg.ordinal = messages.plural.bind(messages, true)
-msg.plural = messages.plural.bind(messages, false)
+const plurals = new Plurals('en')
+msg.ordinal = plurals.get.bind(plurals, true)
+msg.plural = plurals.get.bind(plurals, false)
 Object.defineProperty(msg, 'locale', {
   enumerable: true,
   get() {
-    return messages.getLocale()
+    return plurals.getLocale()
   },
   set(lc) {
-    messages.setLocale(lc)
+    plurals.setLocale(lc)
   }
 })
 

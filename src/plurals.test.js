@@ -1,32 +1,32 @@
-import Messages from './messages'
+import Plurals from './plurals'
 
-let messages
+let plurals
 beforeEach(() => {
-  messages = new Messages('en')
+  plurals = new Plurals('en')
 })
 
 test('getLocale', () => {
-  expect(messages.getLocale()).toBe('en')
+  expect(plurals.getLocale()).toBe('en')
 })
 
 test('setLocale', () => {
-  messages.setLocale('fi-FI')
-  expect(messages.getLocale()).toMatch(/^(fi|fi-FI)$/)
+  plurals.setLocale('fi-FI')
+  expect(plurals.getLocale()).toMatch(/^(fi|fi-FI)$/)
 })
 
 describe('plural', () => {
   test('match one', () => {
-    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    const msg = plurals.get(false, { one: 'one', other: 'other' })
     expect(msg(1)).toBe('one')
   })
 
   test('match other', () => {
-    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    const msg = plurals.get(false, { one: 'one', other: 'other' })
     expect(msg(2)).toBe('other')
   })
 
   test('match exact', () => {
-    const msg = messages.plural(false, {
+    const msg = plurals.get(false, {
       1: 'number 1',
       one: 'one',
       other: 'other'
@@ -35,7 +35,7 @@ describe('plural', () => {
   })
 
   test('with ordinal type', () => {
-    const msg = messages.plural(true, {
+    const msg = plurals.get(true, {
       one: 'one',
       two: 'two',
       few: 'few',
@@ -45,7 +45,7 @@ describe('plural', () => {
   })
 
   test('function messages', () => {
-    const msg = messages.plural(true, {
+    const msg = plurals.get(true, {
       one: n => `${n}st`,
       two: n => `${n}nd`,
       few: n => `${n}rd`,
@@ -57,21 +57,21 @@ describe('plural', () => {
   })
 
   test('with non-numeric string', () => {
-    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    const msg = plurals.get(false, { one: 'one', other: 'other' })
     expect(() => msg('one')).toThrow(/Plural.*"one"/)
   })
 
   test('with non-numeric NaN', () => {
-    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    const msg = plurals.get(false, { one: 'one', other: 'other' })
     expect(() => msg(NaN)).toThrow(/Plural.*null/)
   })
 
   test('missing cases', () => {
-    expect(() => messages.plural(false)).toThrow(/Missing cases argument/)
+    expect(() => plurals.get(false)).toThrow(/Missing cases argument/)
   })
 
   test('missing other', () => {
-    expect(() => messages.plural(false, { one: 'one' })).toThrow(
+    expect(() => plurals.get(false, { one: 'one' })).toThrow(
       /cases.other is required/
     )
   })
