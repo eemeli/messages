@@ -15,28 +15,29 @@ export default class Messages {
     this[pluralRules] = new Intl.PluralRules(lc)
   }
 
-  defaultOther(arg, method) {
-    throw new Error(`A ${method} "other" case is required to match "${arg}"`)
-  }
-
-  nonNumeric(arg) {
-    throw new Error(`Plural argument "${arg}" is not numeric`)
-  }
-
   pluralRule(arg, ordinal) {
     return ordinal
       ? new Intl.PluralRules(this.getLocale(), { type: 'ordinal' }).select(arg)
       : this[pluralRules].select(arg)
   }
 
-  plural(ordinal, arg, cases) {
-    if (!isFinite(arg)) arg = this.nonNumeric(arg)
+  plural(ordinal, cases) {
     if (!cases || typeof cases !== 'object')
-      return this.defaultOther(arg, 'plural')
-    if (!cases.other) cases.other = this.defaultOther(arg, 'plural')
-    if (arg in cases) return cases[arg]
-    const rule = this.pluralRule(arg, ordinal)
-    return rule in cases ? cases[rule] : cases.other
+      throw new Error('Missing cases argument')
+    if (cases.other == null) throw new Error('cases.other is required')
+    return arg => {
+      if (!isFinite(arg)) {
+        const strArg = JSON.stringify(arg)
+        throw new Error(`Plural argument ${strArg} is not numeric`)
+      }
+      let res
+      if (arg in cases) res = cases[arg]
+      else {
+        const rule = this.pluralRule(arg, ordinal)
+        res = rule in cases ? cases[rule] : cases.other
+      }
+      return typeof res === 'function' ? res(arg) : res
+    }
   }
 
   select(cases, other) {

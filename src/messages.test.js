@@ -14,69 +14,66 @@ test('setLocale', () => {
   expect(messages.getLocale()).toMatch(/^(fi|fi-FI)$/)
 })
 
-test('defaultOther', () => {
-  expect(() => messages.defaultOther('ARG', 'METHOD')).toThrow(/METHOD.*ARG/)
-})
-
-test('nonNumeric', () => {
-  expect(() => messages.nonNumeric('ARG')).toThrow(/ARG/)
-})
-
 describe('plural', () => {
   test('match one', () => {
-    const msg = messages.plural(false, 1, { one: 'one', other: 'other' })
-    expect(msg).toBe('one')
+    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    expect(msg(1)).toBe('one')
   })
 
   test('match other', () => {
-    const msg = messages.plural(false, 2, { one: 'one', other: 'other' })
-    expect(msg).toBe('other')
+    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    expect(msg(2)).toBe('other')
   })
 
   test('match exact', () => {
-    const msg = messages.plural(false, 1, {
+    const msg = messages.plural(false, {
       1: 'number 1',
       one: 'one',
       other: 'other'
     })
-    expect(msg).toBe('number 1')
+    expect(msg(1)).toBe('number 1')
   })
 
   test('with ordinal type', () => {
-    const msg = messages.plural(
-      true,
-      3,
-      { one: 'one', two: 'two', few: 'few', other: 'other' }
-    )
-    expect(msg).toBe('few')
+    const msg = messages.plural(true, {
+      one: 'one',
+      two: 'two',
+      few: 'few',
+      other: 'other'
+    })
+    expect(msg(3)).toBe('few')
+  })
+
+  test('function messages', () => {
+    const msg = messages.plural(true, {
+      one: n => `${n}st`,
+      two: n => `${n}nd`,
+      few: n => `${n}rd`,
+      other: n => `${n}th`
+    })
+    expect(msg(2)).toBe('2nd')
+    expect(msg(11)).toBe('11th')
+    expect(msg(21)).toBe('21st')
   })
 
   test('with non-numeric string', () => {
-    expect(() =>
-      messages.plural(false, 'one', { one: 'one', other: 'other' })
-    ).toThrow(/Plural.*"one"/)
+    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    expect(() => msg('one')).toThrow(/Plural.*"one"/)
   })
 
   test('with non-numeric NaN', () => {
-    expect(() =>
-      messages.plural(false, NaN, { one: 'one', other: 'other' })
-    ).toThrow(/Plural.*"NaN"/)
+    const msg = messages.plural(false, { one: 'one', other: 'other' })
+    expect(() => msg(NaN)).toThrow(/Plural.*null/)
+  })
+
+  test('missing cases', () => {
+    expect(() => messages.plural(false)).toThrow(/Missing cases argument/)
   })
 
   test('missing other', () => {
-    expect(() => messages.plural(false, 1, { one: 'one' })).toThrow(/plural.*"1"/)
-  })
-
-  test('with custom defaultOther', () => {
-    messages.defaultOther = arg => String(arg)
-    const msg = messages.plural(false, 2, { one: 'one' })
-    expect(msg).toBe('2')
-  })
-
-  test('with custom nonNumeric', () => {
-    messages.nonNumeric = arg => 0
-    const msg = messages.plural(false, 'x', { 0: 'zero', one: 'one', other: 'other' })
-    expect(msg).toBe('zero')
+    expect(() => messages.plural(false, { one: 'one' })).toThrow(
+      /cases.other is required/
+    )
   })
 })
 
@@ -99,7 +96,7 @@ describe('select', () => {
     expect(msg('bar')).toBe('')
   })
 
-  test('function message', () => {
+  test('function messages', () => {
     const msg = messages.select({ foo: f => `FOO${f}` }, o => `BAR${o}`)
     expect(msg('foo')).toBe('FOOfoo')
     expect(msg('bar')).toBe('BARbar')
