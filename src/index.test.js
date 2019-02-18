@@ -1,15 +1,11 @@
 import msg from './index'
 
-test('msg(key)', () => {
-  expect(msg('key')).toBe('key')
-})
-
-test('msg(key, value)', () => {
-  expect(msg('key', 'value')).toBe('value')
+test('msg(str)', () => {
+  expect(msg('foo')).toBe('foo')
 })
 
 test('msg`string`', () => {
-  expect(msg`string`).toBe('string')
+  expect(msg`foo`).toBe('foo')
 })
 
 test('msg`string ${value}`', () => {

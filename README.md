@@ -5,12 +5,9 @@ A work in progress. Eventually, a complete framework for localizable messages fo
 ```js
 import msg from 'messages'
 
-msg('key') === 'key'
-msg('key', 'value') === 'value'
-msg`string` === 'string'
-
-const value = 'val'
-msg`string ${value}` === 'string val'
+msg('foo') === 'foo'
+msg`bar` === 'bar'
+msg`string ${'baz'}` === 'string baz'
 
 const selectMsg = msg.select({ foo: 'bar' }, 'qux')
 selectMsg('foo') === 'bar'

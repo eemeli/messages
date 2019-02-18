@@ -1,10 +1,7 @@
 import Plurals from './plurals'
 
 function msg(strings, ...values) {
-  if (typeof strings === 'string') {
-    // called as msg('key') or msg('key', 'value')
-    return values.length === 0 ? strings : values[0]
-  }
+  if (typeof strings === 'string') return strings // called as msg('message')
   let res = ''
   for (let i = 0; i < values.length; ++i) {
     res += strings[i] + values[i]
