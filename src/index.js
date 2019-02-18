@@ -1,11 +1,6 @@
 import Messages from './messages'
 
-export const messages = new Messages('en')
-export const ordinal = messages.plural.bind(messages, true)
-export const plural = messages.plural.bind(messages, false)
-export const select = messages.select.bind(messages)
-
-const msg = (strings, ...values) => {
+function msg(strings, ...values) {
   if (typeof strings === 'string') {
     // called as msg('key') or msg('key', 'value')
     return values.length === 0 ? strings : values[0]
@@ -16,5 +11,27 @@ const msg = (strings, ...values) => {
   }
   return res + strings[strings.length - 1]
 }
+
+msg.select = function select(cases, other) {
+  if (!cases || typeof cases !== 'object')
+    throw new Error('Missing cases argument')
+  return arg => {
+    const res = arg in cases ? cases[arg] : cases.other || other || ''
+    return typeof res === 'function' ? res(arg) : res
+  }
+}
+
+const messages = new Messages('en')
+msg.ordinal = messages.plural.bind(messages, true)
+msg.plural = messages.plural.bind(messages, false)
+Object.defineProperty(msg, 'locale', {
+  enumerable: true,
+  get() {
+    return messages.getLocale()
+  },
+  set(lc) {
+    messages.setLocale(lc)
+  }
+})
 
 export default msg

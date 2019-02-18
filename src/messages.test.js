@@ -76,33 +76,3 @@ describe('plural', () => {
     )
   })
 })
-
-describe('select', () => {
-  test('other as key', () => {
-    const msg = messages.select({ foo: 'FOO', other: 'BAR' })
-    expect(msg('foo')).toBe('FOO')
-    expect(msg('bar')).toBe('BAR')
-  })
-
-  test('other as arg', () => {
-    const msg = messages.select({ foo: 'FOO' }, 'BAR')
-    expect(msg('foo')).toBe('FOO')
-    expect(msg('bar')).toBe('BAR')
-  })
-
-  test('missing other', () => {
-    const msg = messages.select({ foo: 'FOO' })
-    expect(msg('foo')).toBe('FOO')
-    expect(msg('bar')).toBe('')
-  })
-
-  test('function messages', () => {
-    const msg = messages.select({ foo: f => `FOO${f}` }, o => `BAR${o}`)
-    expect(msg('foo')).toBe('FOOfoo')
-    expect(msg('bar')).toBe('BARbar')
-  })
-
-  test('missing cases', () => {
-    expect(() => messages.select()).toThrow(/Missing cases/)
-  })
-})

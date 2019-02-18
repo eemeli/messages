@@ -46,13 +46,4 @@ export default class Messages {
       return typeof res === 'function' ? res(arg) : res
     }
   }
-
-  select(cases, other) {
-    if (!cases || typeof cases !== 'object')
-      throw new Error('Missing cases argument')
-    return arg => {
-      const res = arg in cases ? cases[arg] : cases.other || other || ''
-      return typeof res === 'function' ? res(arg) : res
-    }
-  }
 }
