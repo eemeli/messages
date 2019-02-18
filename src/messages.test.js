@@ -81,25 +81,31 @@ describe('plural', () => {
 })
 
 describe('select', () => {
-  test('match key', () => {
-    const msg = messages.select('one', { one: 'one', other: 'other' })
-    expect(msg).toBe('one')
+  test('other as key', () => {
+    const msg = messages.select({ foo: 'FOO', other: 'BAR' })
+    expect(msg('foo')).toBe('FOO')
+    expect(msg('bar')).toBe('BAR')
   })
 
-  test('match other', () => {
-    const msg = messages.select('two', { one: 'one', other: 'other' })
-    expect(msg).toBe('other')
+  test('other as arg', () => {
+    const msg = messages.select({ foo: 'FOO' }, 'BAR')
+    expect(msg('foo')).toBe('FOO')
+    expect(msg('bar')).toBe('BAR')
   })
 
   test('missing other', () => {
-    expect(() => messages.select('one', { one: 'one' })).toThrow(
-      /select.*"one"/
-    )
+    const msg = messages.select({ foo: 'FOO' })
+    expect(msg('foo')).toBe('FOO')
+    expect(msg('bar')).toBe('')
   })
 
-  test('with custom defaultOther', () => {
-    messages.defaultOther = arg => String(arg)
-    const msg = messages.select('two', { one: 'one' })
-    expect(msg).toBe('two')
+  test('function message', () => {
+    const msg = messages.select({ foo: f => `FOO${f}` }, o => `BAR${o}`)
+    expect(msg('foo')).toBe('FOOfoo')
+    expect(msg('bar')).toBe('BARbar')
+  })
+
+  test('missing cases', () => {
+    expect(() => messages.select()).toThrow(/Missing cases/)
   })
 })

@@ -39,10 +39,12 @@ export default class Messages {
     return rule in cases ? cases[rule] : cases.other
   }
 
-  select(arg, cases) {
+  select(cases, other) {
     if (!cases || typeof cases !== 'object')
-      return this.defaultOther(arg, 'select')
-    if (!cases.other) cases.other = this.defaultOther(arg, 'select')
-    return arg in cases ? cases[arg] : cases.other
+      throw new Error('Missing cases argument')
+    return arg => {
+      const res = arg in cases ? cases[arg] : cases.other || other || ''
+      return typeof res === 'function' ? res(arg) : res
+    }
   }
 }
