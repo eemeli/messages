@@ -44,7 +44,6 @@ export default class Messages {
       return this.defaultOther(arg, 'plural')
     if (!cases.other) cases.other = this.defaultOther(arg, 'plural')
     if (arg in cases) return cases[arg]
-    if (options.offset) arg -= options.offset
     const rule = this.pluralRule(arg, options.type === 'ordinal')
     return rule in cases ? cases[rule] : cases.other
   }

@@ -56,15 +56,6 @@ describe('plural', () => {
     expect(msg).toBe('few')
   })
 
-  test('with offset & ordinal type', () => {
-    const msg = messages.plural(
-      2,
-      { one: 'one', two: 'two', few: 'few', other: 'other' },
-      { offset: 1, type: 'ordinal' }
-    )
-    expect(msg).toBe('one')
-  })
-
   test('with non-numeric value', () => {
     expect(() =>
       messages.plural('one', { one: 'one', other: 'other' })
