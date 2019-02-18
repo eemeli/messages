@@ -1,6 +1,7 @@
 import 'intl-pluralrules'
 
 const pluralRules = Symbol('pluralRules')
+const ordinalRules = Symbol('ordinalRules')
 
 export default class Messages {
   constructor(lc) {
@@ -13,12 +14,18 @@ export default class Messages {
 
   setLocale(lc) {
     this[pluralRules] = new Intl.PluralRules(lc)
+    this[ordinalRules] = null
   }
 
   pluralRule(arg, ordinal) {
-    return ordinal
-      ? new Intl.PluralRules(this.getLocale(), { type: 'ordinal' }).select(arg)
-      : this[pluralRules].select(arg)
+    if (ordinal) {
+      if (!this[ordinalRules]) {
+        const lc = this.getLocale()
+        this[ordinalRules] = new Intl.PluralRules(lc, { type: 'ordinal' })
+      }
+      return this[ordinalRules].select(arg)
+    }
+    return this[pluralRules].select(arg)
   }
 
   plural(ordinal, cases) {
