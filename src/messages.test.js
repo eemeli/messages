@@ -23,23 +23,18 @@ test('nonNumeric', () => {
 })
 
 describe('plural', () => {
-  test('with key', () => {
-    const msg = messages.plural('key', 1, { one: 'one', other: 'other' })
+  test('match one', () => {
+    const msg = messages.plural(false, 1, { one: 'one', other: 'other' })
     expect(msg).toBe('one')
   })
 
-  test('without key', () => {
-    const msg = messages.plural(1, { one: 'one', other: 'other' })
-    expect(msg).toBe('one')
-  })
-
-  test('matching other', () => {
-    const msg = messages.plural(2, { one: 'one', other: 'other' })
+  test('match other', () => {
+    const msg = messages.plural(false, 2, { one: 'one', other: 'other' })
     expect(msg).toBe('other')
   })
 
-  test('matching exact', () => {
-    const msg = messages.plural(1, {
+  test('match exact', () => {
+    const msg = messages.plural(false, 1, {
       1: 'number 1',
       one: 'one',
       other: 'other'
@@ -49,51 +44,49 @@ describe('plural', () => {
 
   test('with ordinal type', () => {
     const msg = messages.plural(
+      true,
       3,
-      { one: 'one', two: 'two', few: 'few', other: 'other' },
-      { type: 'ordinal' }
+      { one: 'one', two: 'two', few: 'few', other: 'other' }
     )
     expect(msg).toBe('few')
   })
 
-  test('with non-numeric value', () => {
+  test('with non-numeric string', () => {
     expect(() =>
-      messages.plural('one', { one: 'one', other: 'other' })
+      messages.plural(false, 'one', { one: 'one', other: 'other' })
     ).toThrow(/Plural.*"one"/)
-    expect(() => messages.plural(NaN, { one: 'one', other: 'other' })).toThrow(
-      /Plural.*"NaN"/
-    )
+  })
+
+  test('with non-numeric NaN', () => {
+    expect(() =>
+      messages.plural(false, NaN, { one: 'one', other: 'other' })
+    ).toThrow(/Plural.*"NaN"/)
   })
 
   test('missing other', () => {
-    expect(() => messages.plural(1, { one: 'one' })).toThrow(/plural.*"1"/)
+    expect(() => messages.plural(false, 1, { one: 'one' })).toThrow(/plural.*"1"/)
   })
 
   test('with custom defaultOther', () => {
     messages.defaultOther = arg => String(arg)
-    const msg = messages.plural(2, { one: 'one' })
+    const msg = messages.plural(false, 2, { one: 'one' })
     expect(msg).toBe('2')
   })
 
   test('with custom nonNumeric', () => {
     messages.nonNumeric = arg => 0
-    const msg = messages.plural('x', { 0: 'zero', one: 'one', other: 'other' })
+    const msg = messages.plural(false, 'x', { 0: 'zero', one: 'one', other: 'other' })
     expect(msg).toBe('zero')
   })
 })
 
 describe('select', () => {
-  test('with key', () => {
-    const msg = messages.select('key', 'one', { one: 'one', other: 'other' })
-    expect(msg).toBe('one')
-  })
-
-  test('without key', () => {
+  test('match key', () => {
     const msg = messages.select('one', { one: 'one', other: 'other' })
     expect(msg).toBe('one')
   })
 
-  test('matching other', () => {
+  test('match other', () => {
     const msg = messages.select('two', { one: 'one', other: 'other' })
     expect(msg).toBe('other')
   })

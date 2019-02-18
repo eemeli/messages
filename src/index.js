@@ -1,7 +1,8 @@
 import Messages from './messages'
 
 export const messages = new Messages('en')
-export const plural = messages.plural.bind(messages)
+export const ordinal = messages.plural.bind(messages, true)
+export const plural = messages.plural.bind(messages, false)
 export const select = messages.select.bind(messages)
 
 const msg = (strings, ...values) => {

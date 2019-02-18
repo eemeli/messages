@@ -29,32 +29,17 @@ export default class Messages {
       : this[pluralRules].select(arg)
   }
 
-  plural(key, arg, cases, options) {
-    if (typeof arg === 'object' && arguments.length < 4) {
-      // plural(arg, cases[, options])
-      key = null
-      arg = arguments[0]
-      cases = arguments[1]
-      options = arguments.length >= 3 ? arguments[2] : {}
-    } else if (!options) {
-      options = {}
-    }
+  plural(ordinal, arg, cases) {
     if (!isFinite(arg)) arg = this.nonNumeric(arg)
     if (!cases || typeof cases !== 'object')
       return this.defaultOther(arg, 'plural')
     if (!cases.other) cases.other = this.defaultOther(arg, 'plural')
     if (arg in cases) return cases[arg]
-    const rule = this.pluralRule(arg, options.type === 'ordinal')
+    const rule = this.pluralRule(arg, ordinal)
     return rule in cases ? cases[rule] : cases.other
   }
 
-  select(key, arg, cases) {
-    if (typeof arg === 'object' && arguments.length === 2) {
-      // select(arg, cases)
-      key = null
-      arg = arguments[0]
-      cases = arguments[1]
-    }
+  select(arg, cases) {
     if (!cases || typeof cases !== 'object')
       return this.defaultOther(arg, 'select')
     if (!cases.other) cases.other = this.defaultOther(arg, 'select')
