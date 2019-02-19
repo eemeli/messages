@@ -1,4 +1,5 @@
 import Plurals from './plurals'
+import varStringify from './var-stringify'
 
 function msg(strings, ...values) {
   if (typeof strings === 'string') return strings // called as msg('message')
@@ -12,9 +13,10 @@ function msg(strings, ...values) {
 msg.select = function select(cases, other) {
   if (!cases || typeof cases !== 'object')
     throw new Error('Missing cases argument')
+  const caseFns = varStringify(cases, other)
   return arg => {
-    const res = arg in cases ? cases[arg] : cases.other || other || ''
-    return typeof res === 'function' ? res(arg) : res
+    const fn = arg in caseFns ? caseFns[arg] : caseFns.other
+    return fn(arg)
   }
 }
 

@@ -46,10 +46,10 @@ describe('plural', () => {
 
   test('function messages', () => {
     const msg = plurals.get(true, {
-      one: n => `${n}st`,
-      two: n => `${n}nd`,
-      few: n => `${n}rd`,
-      other: n => `${n}th`
+      one: '#st',
+      two: '#nd',
+      few: '#rd',
+      other: '#th'
     })
     expect(msg(2)).toBe('2nd')
     expect(msg(11)).toBe('11th')

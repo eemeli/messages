@@ -59,8 +59,8 @@ describe('select', () => {
     expect(sm('bar')).toBe('')
   })
 
-  test('function messages', () => {
-    const sm = msg.select({ foo: f => `FOO${f}` }, o => `BAR${o}`)
+  test('message variables', () => {
+    const sm = msg.select({ foo: 'FOO#' }, 'BAR#')
     expect(sm('foo')).toBe('FOOfoo')
     expect(sm('bar')).toBe('BARbar')
   })

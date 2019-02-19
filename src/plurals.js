@@ -1,4 +1,5 @@
 import 'intl-pluralrules'
+import varStringify from './var-stringify'
 
 const pluralRules = Symbol('pluralRules')
 const ordinalRules = Symbol('ordinalRules')
@@ -32,18 +33,18 @@ export default class Plurals {
     if (!cases || typeof cases !== 'object')
       throw new Error('Missing cases argument')
     if (cases.other == null) throw new Error('cases.other is required')
+    const caseFns = varStringify(cases)
     return arg => {
       if (!isFinite(arg)) {
         const strArg = JSON.stringify(arg)
         throw new Error(`Plural argument ${strArg} is not numeric`)
       }
-      let res
-      if (arg in cases) res = cases[arg]
-      else {
+      let fn = caseFns[arg]
+      if (!fn) {
         const rule = this.pluralRule(arg, ordinal)
-        res = rule in cases ? cases[rule] : cases.other
+        fn = rule in caseFns ? caseFns[rule] : caseFns.other
       }
-      return typeof res === 'function' ? res(arg) : res
+      return fn(arg)
     }
   }
 }
