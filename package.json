@@ -14,6 +14,7 @@
     "build": "babel -d dist src/",
     "prepublishOnly": "npm run build",
     "prettier": "prettier --write src/*",
+    "start": "npm run build && node -i -e 'msg = require(\".\").default'",
     "test": "jest src/"
   },
   "babel": {
