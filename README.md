@@ -22,10 +22,10 @@ pluralMsg(42) === 'truth'
 
 // {0, selectordinal, one{#st} two{#nd} few{#rd} other{#th} }
 const ordinalMsg = msg.ordinal({
-  one: n => `${n}st`,
-  two: n => `${n}nd`,
-  few: n => `${n}rd`,
-  other: n => `${n}th`
+  one: '#st',
+  two: '#nd',
+  few: '#rd',
+  other: '#th'
 })
 ordinalMsg(2) === '2nd'
 ordinalMsg(21) === '21st'
@@ -39,7 +39,7 @@ const person = msg.select({ male: 'He', female: 'She' }, 'They')
 const results = msg.plural({
   0: 'no results',
   one: '1 result',
-  other: n => `${n} results`
+  other: '# results'
 })
 const fullMsg = msg`${person(gender)} found ${results(count)}.`
 ```
