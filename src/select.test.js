@@ -1,32 +1,32 @@
-import Plurals from './plurals'
+import Select from './select'
 
-let plurals
+let select
 beforeEach(() => {
-  plurals = new Plurals('en')
+  select = new Select('en')
 })
 
 test('getLocale', () => {
-  expect(plurals.getLocale()).toBe('en')
+  expect(select.getLocale()).toBe('en')
 })
 
 test('setLocale', () => {
-  plurals.setLocale('fi-FI')
-  expect(plurals.getLocale()).toMatch(/^(fi|fi-FI)$/)
+  select.setLocale('fi-FI')
+  expect(select.getLocale()).toMatch(/^(fi|fi-FI)$/)
 })
 
 describe('plural', () => {
   test('match one', () => {
-    const msg = plurals.compile({ one: 'one', other: 'other' })
+    const msg = select.compile({ one: 'one', other: 'other' })
     expect(msg(1)).toBe('one')
   })
 
   test('match other', () => {
-    const msg = plurals.compile({ one: 'one', other: 'other' })
+    const msg = select.compile({ one: 'one', other: 'other' })
     expect(msg(2)).toBe('other')
   })
 
   test('match exact', () => {
-    const msg = plurals.compile({
+    const msg = select.compile({
       1: 'number 1',
       one: 'one',
       other: 'other'
@@ -35,7 +35,7 @@ describe('plural', () => {
   })
 
   test('with ordinal type', () => {
-    const msg = plurals.compile(
+    const msg = select.compile(
       {
         one: 'one',
         two: 'two',
@@ -48,7 +48,7 @@ describe('plural', () => {
   })
 
   test('function messages', () => {
-    const msg = plurals.compile(
+    const msg = select.compile(
       {
         one: '#st',
         two: '#nd',
@@ -63,19 +63,19 @@ describe('plural', () => {
   })
 
   test('missing default case', () => {
-    const msg = plurals.compile({ one: 'one' })
+    const msg = select.compile({ one: 'one' })
     expect(msg(1)).toBe('one')
     expect(msg(2)).toBe('')
   })
 
   test('custom default case', () => {
-    const msg = plurals.compile({ one: 'one', foo: 'bar' }, { defaultCase: 'foo' })
+    const msg = select.compile({ one: 'one', foo: 'bar' }, { defaultCase: 'foo' })
     expect(msg(1)).toBe('one')
     expect(msg(2)).toBe('bar')
   })
 
   test('with non-numeric arg', () => {
-    const msg = plurals.compile({ one: 'one', other: 'other' })
+    const msg = select.compile({ one: 'one', other: 'other' })
     expect(msg(1)).toBe('one')
     expect(msg('one')).toBe('one')
     expect(msg('foo')).toBe('other')
@@ -83,6 +83,6 @@ describe('plural', () => {
   })
 
   test('missing cases', () => {
-    expect(() => plurals.compile()).toThrow(/Missing cases argument/)
+    expect(() => select.compile()).toThrow(/Missing cases argument/)
   })
 })

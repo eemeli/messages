@@ -1,4 +1,4 @@
-import Plurals from './plurals'
+import Select from './select'
 
 function msg(strings, ...values) {
   if (typeof strings === 'string') return strings // called as msg('message')
@@ -9,17 +9,18 @@ function msg(strings, ...values) {
   return res + strings[strings.length - 1]
 }
 
-const plurals = new Plurals('en')
+const select = new Select('en')
+const compileSelector = select.compile.bind(select)
 
 Object.defineProperty(msg, 'locale', {
   enumerable: true,
   get() {
-    return plurals.getLocale()
+    return select.getLocale()
   },
   set(lc) {
-    plurals.setLocale(lc)
+    select.setLocale(lc)
   }
 })
 
-export const select = plurals.compile.bind(plurals)
-export default msg
+
+export { msg as default, compileSelector as select }

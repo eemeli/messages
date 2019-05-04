@@ -4,7 +4,7 @@ import varStringify from './var-stringify'
 const pluralRules = Symbol('pluralRules')
 const ordinalRules = Symbol('ordinalRules')
 
-export default class Plurals {
+export default class Select {
   constructor(lc) {
     this.setLocale(lc)
   }
