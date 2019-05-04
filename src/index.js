@@ -10,12 +10,13 @@ function msg(strings, ...values) {
   return res + strings[strings.length - 1]
 }
 
-msg.select = function select(cases, other) {
+msg.select = function select(cases, options = {}) {
   if (!cases || typeof cases !== 'object')
     throw new Error('Missing cases argument')
-  const caseFns = varStringify(cases, other)
+  const { defaultCase = 'other' } = options
+  const caseFns = varStringify(cases, defaultCase)
   return arg => {
-    const fn = arg in caseFns ? caseFns[arg] : caseFns.other
+    const fn = arg in caseFns ? caseFns[arg] : caseFns[defaultCase]
     return fn(arg)
   }
 }

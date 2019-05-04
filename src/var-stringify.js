@@ -17,11 +17,11 @@ function varString(str) {
   return arg => parts.join(arg)
 }
 
-export default function varStringify(cases, other) {
+export default function varStringify(cases, defaultCase) {
   const res = {}
   for (const key of Object.keys(cases)) {
     res[key] = varString(cases[key])
   }
-  if (!res.other) res.other = varString(other || '')
+  if (!res[defaultCase]) res[defaultCase] = () => ''
   return res
 }

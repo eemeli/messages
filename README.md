@@ -10,7 +10,7 @@ msg`bar` === 'bar'
 msg`string ${'baz'}` === 'string baz'
 
 // {0, select, foo{bar} other{qux} }
-const selectMsg = msg.select({ foo: 'bar' }, 'qux')
+const selectMsg = msg.select({ foo: 'bar', other: 'qux' })
 selectMsg('foo') === 'bar'
 selectMsg('baz') === 'qux'
 
@@ -35,7 +35,7 @@ ordinalMsg(21) === '21st'
 // } found {count, plural,
 //   =0 {no results} one {1 result} other {# results}
 // }.
-const person = msg.select({ male: 'He', female: 'She' }, 'They')
+const person = msg.select({ male: 'He', female: 'She', other: 'They' })
 const results = msg.plural({
   0: 'no results',
   one: '1 result',

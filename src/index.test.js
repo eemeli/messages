@@ -41,26 +41,26 @@ describe('locale', () => {
 })
 
 describe('select', () => {
-  test('other as key', () => {
+  test('other as default case', () => {
     const sm = msg.select({ foo: 'FOO', other: 'BAR' })
     expect(sm('foo')).toBe('FOO')
     expect(sm('bar')).toBe('BAR')
   })
 
-  test('other as arg', () => {
-    const sm = msg.select({ foo: 'FOO' }, 'BAR')
+  test('defaultCase option', () => {
+    const sm = msg.select({ foo: 'FOO', qux: 'BAR' }, { defaultCase: 'qux' })
     expect(sm('foo')).toBe('FOO')
     expect(sm('bar')).toBe('BAR')
   })
 
-  test('missing other', () => {
+  test('missing default case', () => {
     const sm = msg.select({ foo: 'FOO' })
     expect(sm('foo')).toBe('FOO')
     expect(sm('bar')).toBe('')
   })
 
   test('message variables', () => {
-    const sm = msg.select({ foo: 'FOO#' }, 'BAR#')
+    const sm = msg.select({ foo: 'FOO#', other: 'BAR#' })
     expect(sm('foo')).toBe('FOOfoo')
     expect(sm('bar')).toBe('BARbar')
   })
