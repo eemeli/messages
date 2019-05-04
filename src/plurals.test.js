@@ -16,17 +16,17 @@ test('setLocale', () => {
 
 describe('plural', () => {
   test('match one', () => {
-    const msg = plurals.get(false, { one: 'one', other: 'other' })
+    const msg = plurals.compile({ one: 'one', other: 'other' })
     expect(msg(1)).toBe('one')
   })
 
   test('match other', () => {
-    const msg = plurals.get(false, { one: 'one', other: 'other' })
+    const msg = plurals.compile({ one: 'one', other: 'other' })
     expect(msg(2)).toBe('other')
   })
 
   test('match exact', () => {
-    const msg = plurals.get(false, {
+    const msg = plurals.compile({
       1: 'number 1',
       one: 'one',
       other: 'other'
@@ -35,43 +35,49 @@ describe('plural', () => {
   })
 
   test('with ordinal type', () => {
-    const msg = plurals.get(true, {
-      one: 'one',
-      two: 'two',
-      few: 'few',
-      other: 'other'
-    })
+    const msg = plurals.compile(
+      {
+        one: 'one',
+        two: 'two',
+        few: 'few',
+        other: 'other'
+      },
+      { type: 'ordinal' }
+    )
     expect(msg(3)).toBe('few')
   })
 
   test('function messages', () => {
-    const msg = plurals.get(true, {
-      one: '#st',
-      two: '#nd',
-      few: '#rd',
-      other: '#th'
-    })
+    const msg = plurals.compile(
+      {
+        one: '#st',
+        two: '#nd',
+        few: '#rd',
+        other: '#th'
+      },
+      { type: 'ordinal' }
+    )
     expect(msg(2)).toBe('2nd')
     expect(msg(11)).toBe('11th')
     expect(msg(21)).toBe('21st')
   })
 
   test('with non-numeric string', () => {
-    const msg = plurals.get(false, { one: 'one', other: 'other' })
+    const msg = plurals.compile({ one: 'one', other: 'other' })
     expect(() => msg('one')).toThrow(/Plural.*"one"/)
   })
 
   test('with non-numeric NaN', () => {
-    const msg = plurals.get(false, { one: 'one', other: 'other' })
+    const msg = plurals.compile({ one: 'one', other: 'other' })
     expect(() => msg(NaN)).toThrow(/Plural.*null/)
   })
 
   test('missing cases', () => {
-    expect(() => plurals.get(false)).toThrow(/Missing cases argument/)
+    expect(() => plurals.compile()).toThrow(/Missing cases argument/)
   })
 
   test('missing other', () => {
-    expect(() => plurals.get(false, { one: 'one' })).toThrow(
+    expect(() => plurals.compile({ one: 'one' })).toThrow(
       /cases.other is required/
     )
   })

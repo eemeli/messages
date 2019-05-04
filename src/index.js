@@ -22,8 +22,8 @@ msg.select = function select(cases, options = {}) {
 }
 
 const plurals = new Plurals('en')
-msg.ordinal = plurals.get.bind(plurals, true)
-msg.plural = plurals.get.bind(plurals, false)
+msg.ordinal = plurals.compile.bind(plurals, { type: 'ordinal' })
+msg.plural = plurals.compile.bind(plurals)
 Object.defineProperty(msg, 'locale', {
   enumerable: true,
   get() {

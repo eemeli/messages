@@ -18,18 +18,18 @@ export default class Plurals {
     this[ordinalRules] = null
   }
 
-  pluralRule(arg, ordinal) {
-    if (ordinal) {
+  pluralRule(arg, { type }) {
+    if (type === 'ordinal') {
       if (!this[ordinalRules]) {
         const lc = this.getLocale()
-        this[ordinalRules] = new Intl.PluralRules(lc, { type: 'ordinal' })
+        this[ordinalRules] = new Intl.PluralRules(lc, { type })
       }
       return this[ordinalRules].select(arg)
     }
     return this[pluralRules].select(arg)
   }
 
-  get(ordinal, cases) {
+  compile(cases, options = {}) {
     if (!cases || typeof cases !== 'object')
       throw new Error('Missing cases argument')
     if (cases.other == null) throw new Error('cases.other is required')
@@ -41,7 +41,7 @@ export default class Plurals {
       }
       let fn = caseFns[arg]
       if (!fn) {
-        const rule = this.pluralRule(arg, ordinal)
+        const rule = this.pluralRule(arg, options)
         fn = rule in caseFns ? caseFns[rule] : caseFns.other
       }
       return fn(arg)
