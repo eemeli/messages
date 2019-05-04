@@ -74,14 +74,12 @@ describe('plural', () => {
     expect(msg(2)).toBe('bar')
   })
 
-  test('with non-numeric string', () => {
+  test('with non-numeric arg', () => {
     const msg = plurals.compile({ one: 'one', other: 'other' })
-    expect(() => msg('one')).toThrow(/Plural.*"one"/)
-  })
-
-  test('with non-numeric NaN', () => {
-    const msg = plurals.compile({ one: 'one', other: 'other' })
-    expect(() => msg(NaN)).toThrow(/Plural.*null/)
+    expect(msg(1)).toBe('one')
+    expect(msg('one')).toBe('one')
+    expect(msg('foo')).toBe('other')
+    expect(msg(NaN)).toBe('other')
   })
 
   test('missing cases', () => {

@@ -34,14 +34,14 @@ export default class Plurals {
       throw new Error('Missing cases argument')
     const caseFns = varStringify(cases, defaultCase)
     return arg => {
-      if (!isFinite(arg)) {
-        const strArg = JSON.stringify(arg)
-        throw new Error(`Plural argument ${strArg} is not numeric`)
-      }
       let fn = caseFns[arg]
       if (!fn) {
-        const rule = this.pluralRule(arg, intlOptions)
-        fn = rule in caseFns ? caseFns[rule] : caseFns[defaultCase]
+        if (typeof arg === 'number') {
+          const rule = this.pluralRule(arg, intlOptions)
+          fn = caseFns[rule] || caseFns[defaultCase]
+        } else {
+          fn = caseFns[defaultCase]
+        }
       }
       return fn(arg)
     }
