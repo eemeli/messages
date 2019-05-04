@@ -10,17 +10,8 @@ function msg(strings, ...values) {
 }
 
 const select = new Select('en')
-const compileSelector = select.compile.bind(select)
+const compile = select.compile.bind(select)
+const getLocale = select.getLocale.bind(select)
+const setLocale = select.setLocale.bind(select)
 
-Object.defineProperty(msg, 'locale', {
-  enumerable: true,
-  get() {
-    return select.getLocale()
-  },
-  set(lc) {
-    select.setLocale(lc)
-  }
-})
-
-
-export { msg as default, compileSelector as select }
+export { msg as default, compile as select, getLocale, setLocale }

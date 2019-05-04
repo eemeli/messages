@@ -1,4 +1,4 @@
-import msg, { select } from './index'
+import msg, { getLocale, setLocale, select } from './index'
 
 test('msg(str)', () => {
   expect(msg('foo')).toBe('foo')
@@ -31,12 +31,12 @@ test('msg`string ${value} string ${value2}`', () => {
 
 describe('locale', () => {
   test('get locale', () => {
-    expect(msg.locale).toBe('en')
+    expect(getLocale()).toBe('en')
   })
 
   test('set locale', () => {
-    msg.locale = 'fi'
-    expect(msg.locale).toBe('fi')
+    setLocale('fi')
+    expect(getLocale()).toBe('fi')
   })
 })
 
