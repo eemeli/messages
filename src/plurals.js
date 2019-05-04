@@ -29,11 +29,10 @@ export default class Plurals {
     return this[pluralRules].select(arg)
   }
 
-  compile(cases, options = {}) {
+  compile(cases, { defaultCase = 'other', ...intlOptions } = {}) {
     if (!cases || typeof cases !== 'object')
       throw new Error('Missing cases argument')
-    if (cases.other == null) throw new Error('cases.other is required')
-    const caseFns = varStringify(cases)
+    const caseFns = varStringify(cases, defaultCase)
     return arg => {
       if (!isFinite(arg)) {
         const strArg = JSON.stringify(arg)
@@ -41,8 +40,8 @@ export default class Plurals {
       }
       let fn = caseFns[arg]
       if (!fn) {
-        const rule = this.pluralRule(arg, options)
-        fn = rule in caseFns ? caseFns[rule] : caseFns.other
+        const rule = this.pluralRule(arg, intlOptions)
+        fn = rule in caseFns ? caseFns[rule] : caseFns[defaultCase]
       }
       return fn(arg)
     }

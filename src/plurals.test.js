@@ -62,6 +62,18 @@ describe('plural', () => {
     expect(msg(21)).toBe('21st')
   })
 
+  test('missing default case', () => {
+    const msg = plurals.compile({ one: 'one' })
+    expect(msg(1)).toBe('one')
+    expect(msg(2)).toBe('')
+  })
+
+  test('custom default case', () => {
+    const msg = plurals.compile({ one: 'one', foo: 'bar' }, { defaultCase: 'foo' })
+    expect(msg(1)).toBe('one')
+    expect(msg(2)).toBe('bar')
+  })
+
   test('with non-numeric string', () => {
     const msg = plurals.compile({ one: 'one', other: 'other' })
     expect(() => msg('one')).toThrow(/Plural.*"one"/)
@@ -74,11 +86,5 @@ describe('plural', () => {
 
   test('missing cases', () => {
     expect(() => plurals.compile()).toThrow(/Missing cases argument/)
-  })
-
-  test('missing other', () => {
-    expect(() => plurals.compile({ one: 'one' })).toThrow(
-      /cases.other is required/
-    )
   })
 })
