@@ -1,5 +1,4 @@
 import Plurals from './plurals'
-import varStringify from './var-stringify'
 
 function msg(strings, ...values) {
   if (typeof strings === 'string') return strings // called as msg('message')
@@ -10,20 +9,8 @@ function msg(strings, ...values) {
   return res + strings[strings.length - 1]
 }
 
-msg.select = function select(cases, options = {}) {
-  if (!cases || typeof cases !== 'object')
-    throw new Error('Missing cases argument')
-  const { defaultCase = 'other' } = options
-  const caseFns = varStringify(cases, defaultCase)
-  return arg => {
-    const fn = arg in caseFns ? caseFns[arg] : caseFns[defaultCase]
-    return fn(arg)
-  }
-}
-
 const plurals = new Plurals('en')
-msg.ordinal = plurals.compile.bind(plurals, { type: 'ordinal' })
-msg.plural = plurals.compile.bind(plurals)
+
 Object.defineProperty(msg, 'locale', {
   enumerable: true,
   get() {
@@ -34,4 +21,5 @@ Object.defineProperty(msg, 'locale', {
   }
 })
 
+export const select = plurals.compile.bind(plurals)
 export default msg

@@ -1,4 +1,4 @@
-import msg from './index'
+import msg, { select } from './index'
 
 test('msg(str)', () => {
   expect(msg('foo')).toBe('foo')
@@ -42,30 +42,36 @@ describe('locale', () => {
 
 describe('select', () => {
   test('other as default case', () => {
-    const sm = msg.select({ foo: 'FOO', other: 'BAR' })
+    const sm = select({ foo: 'FOO', other: 'BAR' })
     expect(sm('foo')).toBe('FOO')
     expect(sm('bar')).toBe('BAR')
   })
 
   test('defaultCase option', () => {
-    const sm = msg.select({ foo: 'FOO', qux: 'BAR' }, { defaultCase: 'qux' })
+    const sm = select({ foo: 'FOO', qux: 'BAR' }, { defaultCase: 'qux' })
     expect(sm('foo')).toBe('FOO')
     expect(sm('bar')).toBe('BAR')
   })
 
   test('missing default case', () => {
-    const sm = msg.select({ foo: 'FOO' })
+    const sm = select({ foo: 'FOO' })
     expect(sm('foo')).toBe('FOO')
     expect(sm('bar')).toBe('')
   })
 
   test('message variables', () => {
-    const sm = msg.select({ foo: 'FOO#', other: 'BAR#' })
+    const sm = select({ foo: 'FOO#', other: 'BAR#' })
     expect(sm('foo')).toBe('FOOfoo')
     expect(sm('bar')).toBe('BARbar')
   })
 
+  test('numerical arguments', () => {
+    const sm = select({ one: 'FOO', other: 'BAR' })
+    expect(sm(1)).toBe('FOO')
+    expect(sm(2)).toBe('BAR')
+  })
+
   test('missing cases', () => {
-    expect(() => msg.select()).toThrow(/Missing cases/)
+    expect(() => select()).toThrow(/Missing cases/)
   })
 })
