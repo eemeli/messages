@@ -34,14 +34,14 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
-    "prettier": "^1.17.1"
+    "prettier": "^1.18.2"
   },
   "dependencies": {
-    "intl-pluralrules": "^1.0.2"
+    "intl-pluralrules": "^1.0.3"
   }
 }
